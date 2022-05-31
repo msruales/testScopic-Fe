@@ -12,6 +12,6 @@
 ## Application
 
 - CREDENTIALS:
-    - ADMIN: admin1/admin1
-    - USER: user1/user1
+    - ADMIN: admin1/admin2
+    - USER: user1/user2
 -	There is a TXT file in which different image URLs are found that should be used for testing the app.

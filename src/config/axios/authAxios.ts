@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import {AuthToken} from "../auth/authToken";
+import {AuthToken} from "../token/authToken";
 
 const authAxios = Axios.create({ baseURL: `${process.env.REACT_APP_BASE_URL}/api` })
 

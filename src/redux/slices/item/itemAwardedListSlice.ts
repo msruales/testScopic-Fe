@@ -43,8 +43,6 @@ const itemAwardedListSlice = createSlice({
     }
 })
 
-export const {} = itemAwardedListSlice.actions
-
 export default itemAwardedListSlice.reducer
 
 export const selectFilterAwardedItems = (state: RootState) => state.items.itemsList.filter

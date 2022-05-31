@@ -3,8 +3,8 @@ import {User} from "../../models/user.model";
 import {RootState} from "../store";
 import userService from "../../services/user.service";
 import {Login} from "../../models/login.model";
-import {AuthToken} from "../../config/auth/authToken";
-import {userAdapter} from "../../pages/Login/adapters/user.adapter";
+import {AuthToken} from "../../config/token/authToken";
+import {userAdapter} from "../../adapters/user.adapter";
 import {Register} from "../../models/register.model";
 
 export const Init = createAsyncThunk("user/init", async () => {
@@ -15,10 +15,10 @@ export const Init = createAsyncThunk("user/init", async () => {
 
 export const login = createAsyncThunk("user/login", async (values: Login, thunkAPI) => {
     const {data} = await userService.login(values);
-    const token = data.token;
-    const user = userAdapter(data.user)
-    thunkAPI.dispatch(setLogin({token, user}))
-    return {token, user};
+    const token = data.access_token;
+    AuthToken.set(token, true)
+    thunkAPI.dispatch(Init())
+    return {token};
 });
 
 export const register = createAsyncThunk("user/register", async (values: Register, thunkAPI) => {
@@ -55,6 +55,7 @@ const authSlice = createSlice({
         },
         setLogout: () => {
             AuthToken.set('', false)
+            window.location.reload();
             return  {...INITIAL_AUTH}
         },
     },
@@ -66,7 +67,6 @@ const authSlice = createSlice({
             state.isLoading = false
         })
         builder.addCase(login.rejected, (state) => {
-            AuthToken.set('', false)
             state.isLoading = false
         })
         builder.addCase(register.pending, (state) => {

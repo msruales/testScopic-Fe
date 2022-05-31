@@ -7,7 +7,7 @@ import 'antd/dist/antd.css'
 import {configureAbly} from "@ably-labs/react-hooks";
 import { v4 as uuid } from 'uuid';
 const unique_id = uuid();
-configureAbly({ key: "VCu_Zw.NGDPYQ:8X03SbkIzwq_h6Yljew2pfZDL4sKq_nx-2sgNGg-HVw", clientId: unique_id });
+configureAbly({ key: process.env.REACT_APP_MIX_ABLY_PUBLIC_KEY, clientId: unique_id });
 
 function TestApp() {
     return (

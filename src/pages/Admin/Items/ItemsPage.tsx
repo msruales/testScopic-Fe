@@ -11,14 +11,15 @@ import ItemCreateForm from "../../../components/ItemCreateForm";
 import {deleteItemById} from "../../../redux/slices/item/itemDeleteSlice";
 import {updateItemById} from "../../../redux/slices/item/itemUpdateSlice";
 import {createItem} from "../../../redux/slices/item/itemCreateSlice";
+import InputSearch from "../../../components/InputSearch";
+import {useSearchItemByName} from "../../../hooks/useSearchItemByName";
 
 
 export const ItemsPage = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const dispatch = useAppDispatch()
-    const items = useSelector(selectItems)
     const isLoading = useSelector(selectItemsLoading)
-
+    const {itemsSearch,valueSearch,onChangeSearch} = useSearchItemByName(useSelector(selectItems))
     const [currentItem, setCurrentItem] = useState <Item>()
 
     const navigate = useNavigate();
@@ -73,20 +74,20 @@ export const ItemsPage = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <a onClick={() => handleView(record.id)}>View</a>
-                    <a onClick={()=> handleUpdate(record)}>Update</a>
-                    <a onClick={()=> handleDelete(record.id)}>Delete</a>
+                    <Button type="link" onClick={() => handleView(record.id)}>View</Button>
+                    <Button type="link" onClick={()=> handleUpdate(record)}>Update</Button>
+                    <Button danger type="link" onClick={()=> handleDelete(record.id)}>Delete</Button>
                 </Space>
             ),
         },
     ];
 
-    const data: Item[] = items.map(item => ({...item, key: item.id}));
+    const data: Item[] = itemsSearch.map(item => ({...item, key: item.id}));
 
     useEffect(() => {
         dispatch(setFilterItem({name: '', description: ''}))
         dispatch(fetchItems())
-    }, [])
+    }, [dispatch])
 
     return (
         <div>
@@ -99,6 +100,7 @@ export const ItemsPage = () => {
                     </Button>,
                 ]}
             />
+            <InputSearch onChangeSearch={onChangeSearch} searchValue={valueSearch} />
             <Table loading={isLoading} columns={columns} dataSource={data} />
 
             <ItemCreateForm

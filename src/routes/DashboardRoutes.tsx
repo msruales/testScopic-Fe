@@ -43,9 +43,8 @@ export const DashboardRoutes: React.FC = () => {
     });
 
     return (
-        <Layout style={{height: "100vh"}}>
+        <Layout style={{height: "100%"}}>
             <Header style={{position: 'fixed', zIndex: 1, width: '100%'}}>
-                <div className="logo"/>
                 <Menu
                     onClick={onClick}
                     defaultOpenKeys={['/']}
@@ -54,13 +53,13 @@ export const DashboardRoutes: React.FC = () => {
                     mode="horizontal"
                     items={itemsMenu}
                 />
-                <Affix offsetTop={10}>
+                <Affix style={{ position: 'absolute', top: 0, right: 20 }}>
                     <Button type="primary" onClick={Logout}>
                         Logout
                     </Button>
                 </Affix>
             </Header>
-            <Content className="site-layout" style={{padding: '50px 50px', marginTop: 64}}>
+            <Content className="site-layout" style={{padding: '50px 50px', marginTop: 64, flex: 'none'}}>
                 <div className="site-layout-background" style={{padding: 24, minHeight: 380}}>
                     <Routes>
                         {

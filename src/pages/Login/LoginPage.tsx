@@ -1,4 +1,4 @@
-import {Form, Input, Button, Typography, Space} from 'antd';
+import {Form, Input, Button, Typography, Space, message} from 'antd';
 import {useAppDispatch} from "../../app/hooks";
 import {isLoginLoading, login} from "../../redux/slices/authSlice";
 import {Login} from "../../models/login.model";
@@ -12,8 +12,11 @@ export const LoginPage = () => {
     const dispatch = useAppDispatch()
     const isLoading = useSelector(isLoginLoading)
 
-    const onFinish = (values: Login) => {
-        dispatch(login({...values}))
+    const onFinish = async(values: Login) => {
+        const result:any = await dispatch(login({...values}))
+        if(result.error){
+            message.warning('Try again later')
+        }
     };
 
     const onFinishFailed = (errorInfo: any) => {

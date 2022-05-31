@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {RootState} from "../../store";
 import bidService from "../../../services/bid.service";
 import {bidFullDataAdapter} from "../../../adapters/bidFullDataAdapter";
+import {BidFullData} from "../../../models/bid.model";
 
 export const getAllBidsByUser = createAsyncThunk("bids/getAll", async ( _ ) => {
     const {data} = await bidService.getAllBidsForUser();
@@ -10,7 +11,7 @@ export const getAllBidsByUser = createAsyncThunk("bids/getAll", async ( _ ) => {
 
 type InitialValue = {
     isLoading: boolean,
-    bids: any[]
+    bids: BidFullData[]
 }
 
 const INITIAL_ITEM: InitialValue = {

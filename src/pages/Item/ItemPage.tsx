@@ -50,19 +50,34 @@ export const ItemPage = () => {
         navigate(-1)
     }
 
-    const submitBid = useCallback((data: any) => {
-        message.success('Offer sent!');
-        dispatch(auctionCreate(data.bid))
+    const submitBid = useCallback(async (data: any) => {
+
+        const result: any = dispatch(auctionCreate(data.bid))
+        if (result.error) {
+            message.warning('Try again later')
+        } else {
+            message.success('Offer sent!');
+        }
     }, [])
 
-    const switchAutoBidding = useCallback(() => {
-        dispatch(setAutomaticOffers(parseInt(id!)))
+    const switchAutoBidding = useCallback(async () => {
+        const result: any = await dispatch(setAutomaticOffers(parseInt(id!)))
+        if (result.error) {
+            message.warning('An error has occurred, check if you have an established configuration')
+        }
     }, [])
 
-    const [channel] = useChannel("public:public.room", (message) => {
+    const [] = useChannel("public:public.room", (message) => {
         if (message.data.message === 'newAuction') {
-            dispatch(getItemById(parseInt(id!)))
-            lastBid++
+            if (message.data.itemId === parseInt(id!)) {
+                dispatch(getItemById(parseInt(id!)))
+                lastBid++
+            }
+        }
+        if(message.data.message === 'updateAutomaticOffer'){
+            if (message.data.itemId === parseInt(id!)) {
+                dispatch(showAutomaticOffer(parseInt(id!)))
+            }
         }
     });
 
@@ -88,11 +103,11 @@ export const ItemPage = () => {
             <Row>
                 <div style={{width: "100%", height: "100%"}}>
                     <Card
-                        className="card-item"
+                        className="card__item"
                         title={item.name}
                     >
                         <Card.Grid style={gridStyle}>
-                            <Image src={item.imageUrl} alt={item.name}/>
+                            <Image src={item.imageUrl} height={150} alt={item.name}/>
                             <HistoryBid historyData={history}/>
                         </Card.Grid>
                         <Card.Grid style={gridStyle}>

@@ -34,7 +34,9 @@ const ItemCreateForm = ({visible, onCreate, onCancel, dataItem, onUpdate}: Props
         }
 
     useEffect(() => {
-        form.setFieldsValue({...initialData})
+        if(form){
+            form.setFieldsValue({...initialData})
+        }
     }, [dataItem, form])
 
     return (
@@ -55,7 +57,6 @@ const ItemCreateForm = ({visible, onCreate, onCancel, dataItem, onUpdate}: Props
                     })
                     .catch(info => {
                         form.getFieldsError()
-                        form.resetFields();
                         console.log('Validate Failed:', info);
                     });
             }}
@@ -64,20 +65,20 @@ const ItemCreateForm = ({visible, onCreate, onCancel, dataItem, onUpdate}: Props
                 form={form}
                 layout="vertical"
                 name="form_in_modal"
-                initialValues={ initialData }
+                onFinish={(e)=>{console.log(e)}}
+                // initialValues={ initialData }
             >
                 <Form.Item
                     name="name"
                     label="Name"
-                    rules={[{required: true, message: 'Please input the name of collection!'}]}
+                    rules={[{required: true, message: 'Please input the name of auction!'}]}
                 >
                     <Input/>
                 </Form.Item>
                 <Form.Item
                     name="description"
                     label="Description"
-                    rules={[{required: true, message: 'Please input the title of collection!'}]}
-
+                    rules={[{required: true, message: 'Please input the description of auction!'}]}
                 >
                     <Input type="textarea"/>
                 </Form.Item>

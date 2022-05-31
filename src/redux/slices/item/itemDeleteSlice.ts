@@ -35,6 +35,5 @@ const itemDeleteSlice = createSlice({
     }
 })
 
-export const {} = itemDeleteSlice.actions
 export default itemDeleteSlice.reducer
 export const selectItems = (state: RootState) => state.items.itemDelete.isLoading

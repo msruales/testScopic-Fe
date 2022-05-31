@@ -43,7 +43,6 @@ const itemUpdateSlice = createSlice({
     }
 })
 
-export const {} = itemUpdateSlice.actions
 export default itemUpdateSlice.reducer
 
 export const isLoadingUpdate = (state: RootState) => state.items.itemUpdate.isLoading

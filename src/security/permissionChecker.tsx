@@ -1,5 +1,5 @@
 import {User} from "../models/user.model";
-import {AuthToken} from "../config/auth/authToken";
+import {AuthToken} from "../config/token/authToken";
 
 export class PermissionChecker {
 

@@ -1,4 +1,4 @@
-import {Button, Form, Input, Space, Typography} from "antd";
+import {Button, Form, Input, message, Space, Typography} from "antd";
 import {useAppDispatch} from "../../app/hooks";
 import {isRegisterLoading, register} from "../../redux/slices/authSlice";
 import {Link} from "react-router-dom";
@@ -11,14 +11,16 @@ const RegisterPage = () => {
     const dispatch = useAppDispatch()
     const isLoading = useSelector(isRegisterLoading)
 
-    const onFinish = (values: Register) => {
-        dispatch(register({...values}))
+    const onFinish = async (values: Register) => {
+        const result: any = dispatch(register({...values}))
+        if(result.error){
+            message.warning('Try again later')
+        }
     };
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
-
 
     return (
         <div style={{

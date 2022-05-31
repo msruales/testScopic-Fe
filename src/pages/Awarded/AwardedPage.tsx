@@ -9,11 +9,13 @@ import {
     selectLoadingAwardedItems
 } from "../../redux/slices/item/itemAwardedListSlice";
 import {Item} from "../../models/item.model";
+import InputSearch from "../../components/InputSearch";
+import {useSearchItemByName} from "../../hooks/useSearchItemByName";
 
 
 export const AwardedPage = () => {
 
-    const awardedList = useSelector(selectAwardedItems)
+    const {itemsSearch,onChangeSearch, valueSearch} = useSearchItemByName(useSelector(selectAwardedItems))
     const isLoading = useSelector(selectLoadingAwardedItems)
 
     const dispatch = useAppDispatch()
@@ -50,11 +52,11 @@ export const AwardedPage = () => {
         },
     ];
 
-    const data: Item[] = awardedList.map(item => ({...item, key: item.id}));
+    const data: Item[] = itemsSearch.map(item => ({...item, key: item.id}));
 
     useEffect(() => {
         dispatch(fetchAwardedItems())
-    }, [])
+    }, [dispatch])
 
     return (
         <div>
@@ -62,6 +64,7 @@ export const AwardedPage = () => {
                 className="site-page-header"
                 title="All Awarded Items"
             />
+            <InputSearch onChangeSearch={onChangeSearch} searchValue={valueSearch} />
             <Table loading={isLoading} columns={columns} dataSource={data}/>
         </div>
     )

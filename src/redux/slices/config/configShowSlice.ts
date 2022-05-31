@@ -4,7 +4,7 @@ import configService from "../../../services/config.service";
 import {Config} from "../../../models/config.model";
 import {configAdapter} from "../../../adapters/config.adapter";
 
-export const showConfigAutomaticOffers = createAsyncThunk("config/setConfig", async () => {
+export const showConfigAutomaticOffers = createAsyncThunk("config/showConfig", async () => {
     const {data} = await configService.getConfig();
     return configAdapter(data)
 });
@@ -22,7 +22,11 @@ const INITIAL_ITEM: InitialValue = {
 const configCreateSlice = createSlice({
     name: 'config',
     initialState: INITIAL_ITEM,
-    reducers: {},
+    reducers: {
+        setConfig: (state, action: PayloadAction<Config>) => {
+            state.config = action.payload
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(showConfigAutomaticOffers.pending, (state) => {
             state.isLoading = true
@@ -36,6 +40,7 @@ const configCreateSlice = createSlice({
         })
     }
 })
+export const {setConfig} =configCreateSlice.actions
 export default configCreateSlice.reducer
 
 export const selectConfigAutomaticOffers = (state: RootState) => state.config.show.config

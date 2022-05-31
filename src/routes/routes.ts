@@ -1,64 +1,53 @@
-import { HomeOutlined } from '@ant-design/icons';
+import { HomeOutlined,SettingOutlined,StarOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import React, {ForwardRefExoticComponent, lazy} from "react";
 import ItemPage from "../pages/Item/ItemPage";
 import Permissions from "../security/permissions";
+import homePage from "../pages/Home/HomePage";
 
 const permissions = Permissions.values
 
 export interface Route {
     path: string,
-    Component: React.LazyExoticComponent<() => JSX.Element> |  any,
+    Component: React.LazyExoticComponent<() => JSX.Element> |  React.Component<() => JSX.Element> |React.Component | React.ComponentProps<any>,
     permissionRequired?: object,
     name: string,
     Icon: ForwardRefExoticComponent<any>
 }
 
-// const authRoutes: Partial<Route>  = [
-//     {
-//         path: '/login',
-//         name: 'Entrar',
-//         Icon: Login
-//     },
-//     {
-//         path: '/logout',
-//         name: 'Salir',
-//         Icon: Login
-//     },
-// ]
 const dashboardRoutes: Route[] = [
     {
         path: '/',
         name: 'Dashboard',
         permissionRequired: permissions.allRoles,
         Icon: HomeOutlined,
-        Component:  lazy(() => import('../pages/Home/HomePage'))
+        Component: homePage
     },
     {
         path: '/items',
         name: 'Admin Items',
         permissionRequired: permissions.admin,
-        Icon: HomeOutlined,
+        Icon: UnorderedListOutlined,
         Component:  lazy(() => import('../pages/Admin/Items/ItemsPage'))
     },
     {
         path: '/bids',
         name: 'See All Bids',
         permissionRequired: permissions.allRoles,
-        Icon: HomeOutlined,
+        Icon: UnorderedListOutlined,
         Component:  lazy(() => import('../pages/Bids/BidsPage'))
     },
     {
         path: '/awarded_items',
         name: 'See All Awarded Items',
         permissionRequired: permissions.allRoles,
-        Icon: HomeOutlined,
+        Icon: StarOutlined,
         Component:  lazy(() => import('../pages/Awarded/AwardedPage'))
     },
     {
         path: '/config',
         name: 'Settings',
         permissionRequired: permissions.allRoles,
-        Icon: HomeOutlined,
+        Icon: SettingOutlined,
         Component:  lazy(() => import('../pages/Config/ConfigPage'))
     },
     {
@@ -73,7 +62,6 @@ const dashboardRoutes: Route[] = [
 
 const routes = {
     dashboardRoutes,
-    // authRoutes
 }
 
 export default routes

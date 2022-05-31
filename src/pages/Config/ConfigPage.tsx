@@ -1,7 +1,7 @@
-import {Form, Button, PageHeader, InputNumber} from 'antd';
+import {Form, Button, PageHeader, InputNumber, message} from 'antd';
 import {InfoCircleOutlined} from '@ant-design/icons';
 import {useAppDispatch} from "../../app/hooks";
-import {useEffect} from "react";
+import {useCallback, useEffect} from "react";
 import {
     selectConfigAutomaticOffers,
     selectConfigAutomaticOffersLoading,
@@ -22,12 +22,18 @@ export const ConfigPage = () => {
     const isLoadingCreateConfig = useSelector(selectConfigAutomaticOffersCreateLoading)
     const dispatch = useAppDispatch()
 
-    const saveConfig = (e: Config) => {
-        dispatch(setConfigAutomaticOffers(e))
-    }
+    const saveConfig = useCallback(async(config: Config) => {
+        const result:any = await dispatch(setConfigAutomaticOffers({...config}))
+        if (result.error) {
+            message.warning('Try again later')
+        } else {
+            message.success('Saved configuration!');
+        }
+    },[dispatch])
+
     useEffect(() => {
         dispatch(showConfigAutomaticOffers())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         if (config && form) {

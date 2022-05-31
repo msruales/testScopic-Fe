@@ -1,12 +1,15 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {RootState} from "../../store";
-import {bidFullDataAdapter} from "../../../adapters/bidFullDataAdapter";
 import configService from "../../../services/config.service";
 import {Config} from "../../../models/config.model";
+import {configAdapter} from "../../../adapters/config.adapter";
+import {setConfig} from "./configShowSlice";
 
-export const setConfigAutomaticOffers = createAsyncThunk("config/setConfig", async ( config: Config ) => {
+export const setConfigAutomaticOffers = createAsyncThunk("config/setConfig", async ( config: Config, thunkAPI ) => {
     const {data} = await configService.setConfig(config);
-    return Object.values(data).map( (bid: any) => bidFullDataAdapter(bid))
+    const configAdapted = configAdapter(data.config);
+    thunkAPI.dispatch(setConfig({...configAdapted}))
+    return data
 });
 
 type InitialValue = {

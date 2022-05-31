@@ -1,4 +1,4 @@
-import {Button, Form, InputNumber, message, Space, Switch} from "antd";
+import {Button, Form, InputNumber, message, Space} from "antd";
 import React, {useEffect} from "react";
 import {DollarOutlined} from "@ant-design/icons";
 import useForm from "antd/lib/form/hooks/useForm";

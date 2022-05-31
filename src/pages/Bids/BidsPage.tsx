@@ -5,6 +5,8 @@ import {useEffect} from "react";
 import {useAppDispatch} from "../../app/hooks";
 import {ColumnsType} from "antd/lib/table";
 import {BidFullData} from "../../models/bid.model";
+import InputSearch from "../../components/InputSearch";
+import {useSearchBidByName} from "../../hooks/useSearchBidByName";
 
 const colorState = (state: string): string => {
     const color = {
@@ -18,7 +20,7 @@ const colorState = (state: string): string => {
 
 export const BidsPage = () => {
 
-    const bids = useSelector(selectAllBids)
+    const {onChangeSearch,valueSearch, bidsSearch} = useSearchBidByName(useSelector(selectAllBids))
     const isLoading = useSelector(selectAllBidsLoading)
 
     const dispatch = useAppDispatch()
@@ -49,7 +51,7 @@ export const BidsPage = () => {
                 <> {
                     record.bids.map( (bid, index) => {
                         const bidsLength = record.bids.length - 1
-                        let color = index === bidsLength ? 'green' : 'geekblue';
+                        let color = index === bidsLength ? colorState(record.state) : 'geekblue';
                         return (
                             <Tag color={color} key={bid.id}>
                                 {bid.bid}
@@ -70,11 +72,11 @@ export const BidsPage = () => {
         },
     ];
 
-    const data: BidFullData[] = bids.map(bids => ({...bids, key: bids.item.id}));
+    const data: BidFullData[] = bidsSearch.map(bids => ({...bids, key: bids.item.id}));
 
     useEffect(() => {
         dispatch(getAllBidsByUser())
-    },[])
+    },[dispatch])
 
     return (
         <div>
@@ -82,6 +84,7 @@ export const BidsPage = () => {
                 className="site-page-header"
                 title="All Bids"
             />
+            <InputSearch onChangeSearch={onChangeSearch} searchValue={valueSearch} />
             <Table loading={isLoading}  columns={columns} dataSource={data} />
         </div>
     )

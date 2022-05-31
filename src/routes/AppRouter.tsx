@@ -11,7 +11,7 @@ const AppRouter = () => {
     const loadingInit = useSelector(isLoadingInit)
 
     if (loadingInit) {
-        return <h1>Cargando</h1>
+        return <h1>Loading...</h1>
     }
 
     return (

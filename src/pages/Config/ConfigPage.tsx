@@ -67,7 +67,7 @@ export const ConfigPage = () => {
                     <InputNumber disabled={isLoadingConfig} placeholder="input placeholder"/>
                 </Form.Item>
                 <Form.Item
-                    label="Bid Alert notification"
+                    label="Bid Alert notification (%)"
                     name="percentageAmount"
                     rules={[
                         {
@@ -82,7 +82,7 @@ export const ConfigPage = () => {
                             max: 100
                         }
                     ]}
-                    tooltip={{title: 'Tooltip with customize icon', icon: <InfoCircleOutlined/>}}
+                    tooltip={{title: 'Percentage of the amount for automatic offers', icon: <InfoCircleOutlined/>}}
                 >
                     <InputNumber disabled={isLoadingConfig} placeholder="input placeholder"/>
                 </Form.Item>

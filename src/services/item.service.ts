@@ -49,6 +49,11 @@ export class UserService {
         return data
     }
 
+    static async showAwardedById(id: number){
+        const {data} = await authAxios.get(`user/awarded_item/${id}`)
+        return data
+    }
+
 }
 
 

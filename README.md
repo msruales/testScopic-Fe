@@ -1,4 +1,8 @@
-## Setup and configure the Front End virtual server (requirements and steps)
+## Steps for testing the test project with Docker
+- In the console, write the command: docker-compose -f docker-compose-local.yml up -d
+The url for the site is: http://127.0.0.1:3000 on your browser
+
+## Setup and configure the Front End virtual server (requirements and steps) ( WITHOUT DOCKER!! )
 
 - Have Node v16.15.0 installed
 - Have npm v8.5.5 installed

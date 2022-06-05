@@ -3,6 +3,7 @@ import React, {ForwardRefExoticComponent, lazy} from "react";
 import ItemPage from "../pages/Item/ItemPage";
 import Permissions from "../security/permissions";
 import homePage from "../pages/Home/HomePage";
+import InvoicePage from "../pages/Invoice/InvoicePage";
 
 const permissions = Permissions.values
 
@@ -56,6 +57,13 @@ const dashboardRoutes: Route[] = [
         permissionRequired: permissions.allRoles,
         Icon: HomeOutlined,
         Component: ItemPage
+    },
+    {
+        path: 'awarded_items/invoice/:id',
+        name: 'invoice/id',
+        permissionRequired: permissions.allRoles,
+        Icon: HomeOutlined,
+        Component: InvoicePage
     }
 ]
 

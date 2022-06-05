@@ -4,12 +4,13 @@ import testCombine from "./slices/item/itemCombineReducers";
 import bidSlice from "./slices/bid/bidSlice";
 import automaticOfferCombineReducers from "./slices/automaticOffer/automaticOfferCombineReducers";
 import configCombineReducers from "./slices/config/configCombineReducers";
+import auctionCreate from "./slices/auction/auctionSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
     items: testCombine,
-    auctions: authSlice,
+    auctions: auctionCreate,
     bids: bidSlice,
     automaticOffer: automaticOfferCombineReducers,
     config: configCombineReducers

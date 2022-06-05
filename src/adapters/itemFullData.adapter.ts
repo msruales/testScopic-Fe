@@ -1,5 +1,6 @@
 import {ItemFullData} from "../models/itemFullData.model";
 import {itemAdapter} from "./item.adapter";
+import {userAdapter} from "./user.adapter";
 
 export const ItemFullDataAdapter = (item: any): ItemFullData => ({
     userAuction: item.user_auction ? {
@@ -18,6 +19,6 @@ export const ItemFullDataAdapter = (item: any): ItemFullData => ({
         item: history.item ? itemAdapter(history.item): null,
     })) : null,
     timeLeft: item.time_left ? item.time_left : [0,0] ,
-    itemOwner: item.item_owner,
+    itemOwner: item.item_owner ? userAdapter(item.item_owner) : null,
     canBid: item.can_bid
 })

@@ -5,6 +5,7 @@ import itemDeleteSlice from "./itemDeleteSlice";
 import itemUpdateSlice from "./itemUpdateSlice";
 import itemCreateSlice from "./itemCreateSlice";
 import itemAwardedListSlice from "./itemAwardedListSlice";
+import itemAwardedShow from "./itemAwardedShowSlice";
 
 export default combineReducers({
     itemsList: itemsList,
@@ -12,5 +13,6 @@ export default combineReducers({
     itemDelete: itemDeleteSlice,
     itemUpdate: itemUpdateSlice,
     itemCreate: itemCreateSlice,
-    itemAwardedList: itemAwardedListSlice
+    itemAwardedList: itemAwardedListSlice,
+    itemAwardedShow: itemAwardedShow
 })

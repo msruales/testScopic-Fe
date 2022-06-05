@@ -47,4 +47,4 @@ export default itemAwardedListSlice.reducer
 
 export const selectFilterAwardedItems = (state: RootState) => state.items.itemsList.filter
 export const selectAwardedItems = (state: RootState) => state.items.itemAwardedList.AwardedItems
-export const selectLoadingAwardedItems = (state: RootState) => state.items.itemsList.isLoading
+export const selectLoadingAwardedItems = (state: RootState) => state.items.itemAwardedList.isLoading

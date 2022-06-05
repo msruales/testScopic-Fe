@@ -1,10 +1,10 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {PageHeader, Row, Image, Card, Divider, message} from "antd";
+import {PageHeader, Row, Image, Card, Divider, message, Tag} from "antd";
 import React, {useCallback, useEffect} from "react";
 import {useAppDispatch} from "../../app/hooks";
 import {
     getItemById,
-    selectCurrentItemById,
+    selectCurrentItemById, selectCurrentItemByIdLoading,
     setItemShowInitialValue
 } from "../../redux/slices/item/itemShowSlice";
 import {useSelector} from "react-redux";
@@ -25,6 +25,10 @@ import {
     selectAutomaticOfferCreateLoading,
     setAutomaticOffers
 } from "../../redux/slices/automaticOffer/automaticOfferCreateSlice";
+import {
+    StarOutlined,
+} from '@ant-design/icons';
+import ItemWinner from "./components/ItemWinner";
 
 const gridStyle: React.CSSProperties = {
     width: '50%',
@@ -36,7 +40,8 @@ export const ItemPage = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const isLoadingCreateAuction = useSelector(selectCreateAuctionLoading)
-    const {item, canBid, timeLeft, history, userAuction} = useSelector(selectCurrentItemById)
+    const {item, canBid, timeLeft, history, userAuction, itemOwner} = useSelector(selectCurrentItemById)
+    const isLoadingCurrentItem = useSelector(selectCurrentItemByIdLoading)
     const isActiveAutoBidding = useSelector(selectAutomaticOffer)
     const isActiveAutoBiddingLoading = useSelector(selectAutomaticOfferLoading)
     const switchAutoBiddingLoading = useSelector(selectAutomaticOfferCreateLoading)
@@ -67,16 +72,21 @@ export const ItemPage = () => {
         }
     }, [])
 
-    const [] = useChannel("public:public.room", (message) => {
+    const [chanel] = useChannel("public:public.room", (message) => {
         if (message.data.message === 'newAuction') {
             if (message.data.itemId === parseInt(id!)) {
                 dispatch(getItemById(parseInt(id!)))
                 lastBid++
             }
         }
-        if(message.data.message === 'updateAutomaticOffer'){
+        if (message.data.message === 'updateAutomaticOffer') {
             if (message.data.itemId === parseInt(id!)) {
                 dispatch(showAutomaticOffer(parseInt(id!)))
+            }
+        }
+        if (message.data.message === 'itemUpdated') {
+            if (message.data.itemId === parseInt(id!)) {
+                dispatch(getItemById(parseInt(id!)))
             }
         }
     });
@@ -90,7 +100,7 @@ export const ItemPage = () => {
     }, [])
 
     if (!item) {
-        return <h1>Loading</h1>
+        return <h1>Loading...</h1>
     }
 
     return (
@@ -108,7 +118,7 @@ export const ItemPage = () => {
                     >
                         <Card.Grid style={gridStyle}>
                             <Image src={item.imageUrl} height={150} alt={item.name}/>
-                            <HistoryBid historyData={history}/>
+                            <HistoryBid historyData={history} isLoading={isLoadingCurrentItem}/>
                         </Card.Grid>
                         <Card.Grid style={gridStyle}>
                             <Meta
@@ -118,11 +128,18 @@ export const ItemPage = () => {
                             <Divider/>
                             <h4>Description: {item.description}</h4>
                             <Divider/>
-                            <FormBid submitBid={submitBid} lastBid={lastBid} isLoading={isLoadingCreateAuction}
-                                     disabled={!canBid}/>
-                            <FormAutoBidding submit={switchAutoBidding} autoBidding={isActiveAutoBidding}
-                                             disabled={(days === 0 && seconds === 0)}
-                                             isLoading={switchAutoBiddingLoading || isActiveAutoBiddingLoading}/>
+                            {itemOwner && userAuction ? (
+                                <ItemWinner name={itemOwner.name} bid={userAuction.bid}/>
+                            ) : (
+                                <>
+                                    <FormBid submitBid={submitBid} lastBid={lastBid} isLoading={isLoadingCreateAuction}
+                                             disabled={!canBid}/>
+                                    <FormAutoBidding submit={switchAutoBidding} autoBidding={isActiveAutoBidding}
+                                                     disabled={(days === 0 && seconds === 0)}
+                                                     isLoading={switchAutoBiddingLoading || isActiveAutoBiddingLoading}/>
+                                </>
+                            )
+                            }
                         </Card.Grid>
                     </Card>
                 </div>

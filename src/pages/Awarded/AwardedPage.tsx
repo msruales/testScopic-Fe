@@ -1,4 +1,4 @@
-import {PageHeader, Table, Tag} from "antd";
+import {Button, PageHeader, Table, Tag} from "antd";
 import {useSelector} from "react-redux";
 import {useAppDispatch} from "../../app/hooks";
 import {ColumnsType} from "antd/lib/table";
@@ -11,6 +11,7 @@ import {
 import {Item} from "../../models/item.model";
 import InputSearch from "../../components/InputSearch";
 import {useSearchItemByName} from "../../hooks/useSearchItemByName";
+import {useNavigate} from "react-router-dom";
 
 
 export const AwardedPage = () => {
@@ -19,6 +20,11 @@ export const AwardedPage = () => {
     const isLoading = useSelector(selectLoadingAwardedItems)
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+
+    const viewInvoice = (id: number) => {
+        navigate(`invoice/${id}`)
+    }
 
     const columns: ColumnsType<Item> = [
         {
@@ -47,6 +53,16 @@ export const AwardedPage = () => {
                     <Tag color="green">
                         Won
                     </Tag>
+                </>
+            )
+        },
+        {
+            title: 'Invoice',
+            dataIndex: 'invoice',
+            key: 'invoice',
+            render: (_,record) => (
+                <>
+                    <Button type="link" onClick={() => viewInvoice(record.id)}>View</Button>
                 </>
             )
         },

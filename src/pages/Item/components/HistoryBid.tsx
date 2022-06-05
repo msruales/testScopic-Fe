@@ -4,9 +4,10 @@ import {UserAuction} from "../../../models/auction.model";
 
 interface Props {
     historyData: UserAuction[] | null
+    isLoading: boolean
 }
 
-export const HistoryBid = ({historyData = []}: Props) => {
+export const HistoryBid = ({historyData = [], isLoading}: Props) => {
     return (
         <div
             id="scrollableDiv"
@@ -20,6 +21,7 @@ export const HistoryBid = ({historyData = []}: Props) => {
             }}
         >
             <List
+                loading={isLoading}
                 header={<div>History</div>}
                 dataSource={historyData ? historyData : []}
                 renderItem={ item => (
